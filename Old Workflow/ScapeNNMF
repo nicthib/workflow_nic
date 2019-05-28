@@ -1,0 +1,17 @@
+%% Location is /local_mount/space/lfoivault/lfoivault1/SCAPE_DATA_BACKUP/clay_dendrites_gcamp6f_mouse1_040815/tiffs/runJ_stim_tiffs_diagshiftOW1
+filepath = '/local_mount/space/lfoivault/lfoivault1/SCAPE_DATA_BACKUP/clay_dendrites_gcamp6f_mouse1_040815/tiffs/runJ_stim_tiffs_diagshiftOW1/';
+cd(filepath);
+h = waitbar(0,'Loading images...');
+for i = 6:400
+   imname = ['gray_runJ_stimfr' mat2str(i) '.tiff'];
+   MIJ.run('Open...', ['path=[//local_mount//space//lfoivault//lfoivault1//SCAPE_DATA_BACKUP//clay_dendrites_gcamp6f_mouse1_040815//tiffs//runJ_stim_tiffs_diagshiftOW1//' imname ']']);
+   MIJ.run('Z Project...', 'projection=[Max Intensity]');
+   a(:,:,i) = MIJ.getImage(['MAX_' imname]);
+   MIJ.run('Close All')
+   waitbar(i/400,h);
+end
+close(h)
+
+%% NNMF
+
+[W,H] = nnmf(reshape(a,[301*353 400]),18);

@@ -1,0 +1,36 @@
+for i = 1:size(H,1)
+   Hsc(i,:) = H(i,:).^3;
+   Hsc(i,:) = Hsc(i,:)/max(Hsc(i,:));
+end
+
+FS=44100; FR = size(H,2)/120;
+lengthnote = round(FS/FR);
+
+Ts=1/FS;
+t=[0:Ts:1/FR];
+basefreq = 220;
+%% Get centroids and arrange
+BWtmp = ones(512,512);
+for i = 1:18
+    Wtmp = reshape(W(:,i),[512 512]);
+    s = regionprops(BWtmp, Wtmp, {'Centroid','WeightedCentroid'});
+    seedpix(i,:) = s.WeightedCentroid;
+end
+[~,I] = sort(seedpix(:,2),'ascend');
+%%
+song = [];
+h = waitbar(0,'Making you a song!');
+for i = 1:size(H,1)
+    tmpnote = zeros(size(t));
+    a = 1;
+    for j = I
+        tmpnote = tmpnote+Presc(j,i).*sin(a*pi*basefreq*t);
+        a = a + 1;
+    end
+    song = [song tmpnote];
+    if i > 2
+        song(end-lengthnote-10:end-lengthnote+10) = smooth(song(end-lengthnote-10:end-lengthnote+10),10);
+    end
+    waitbar(i/size(H,1))
+end
+close(h)
