@@ -1,7 +1,7 @@
 % This code arranges spatial and temporal components W (x*y x n) and 
 % H(n x t) into an order dictated by the vertical centroids of W. This
-% assumes W is square when reshaped. 
-function I = arrangecomps(H,W)
+% assumes W is square when reshaped.
+function I = arrangecomps(W)
 sz = sqrt(size(W,1));
 for i = 1:size(W,2)
     Wtmp = reshape(W(:,i),[sz sz]);

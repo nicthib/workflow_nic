@@ -1,10 +1,10 @@
-function BatchConvertFLIR(mouse,run,f_start,f_num)
+function BatchConvertFLIR(mouse,run,f_start,f_num,pth)
 path = fullfile(findmousefolder(mouse),'webcam');
 webdir = fullfile(path,run);
-vidObj = VideoWriter([mouse '_' run '_' mat2str(f_start) '-' mat2str(f_start+f_num) '.avi']);
+vidObj = VideoWriter(fullfile(pth,[mouse '_' run '_' mat2str(f_start) '-' mat2str(f_start+f_num) '.avi']));
 vidObj.FrameRate = 60;
 open(vidObj)
-vf = [1:f_num]+f_start-1;
+vf = [1:f_num]+f_start;
 chk_sz = 1000;
 chk_st = 1:chk_sz:f_num;
 % write chk_sz frame chunks, then append to video file
@@ -29,3 +29,4 @@ end
 writeVideo(vidObj,a)
 clear a
 close(vidObj)
+print('FLIR video written!')
