@@ -14,7 +14,7 @@ for c = 1:numel(chk_st)-1
         w0 = LoadFLIR(webdir,vf(k+chk_st(c)-1),0,outwidth);
         w1 = LoadFLIR(webdir,vf(k+chk_st(c)-1),1,outwidth);
         tmp = cat(2,w0,w1);
-        txt = sprintf([mouse '_' run ' %0.1f sec'],round(vf(k+chk_st(c)-1)/fr));
+        txt = sprintf([mouse '_' run ' %0.1f sec'],round(vf(k+chk_st(c)-1)*10/fr)/10);
         a(k).cdata = uint8(mean(insertText(tmp,[10 10],txt,'FontSize',18),3));
         a(k).colormap = gray(256);
     end
@@ -26,7 +26,7 @@ parfor k = 1:(numel(vf)-chk_st(end)+1)
     w0 = LoadFLIR(webdir,vf(k+chk_st(end)-1),0,outwidth);
     w1 = LoadFLIR(webdir,vf(k+chk_st(end)-1),1,outwidth);
     tmp = cat(2,w0,w1);
-    txt = sprintf([mouse '_' run ' %0.1f sec'],vf(k)/fr);
+    txt = sprintf([mouse '_' run ' %.1f sec'],round(vf(k+chk_st(c)-1)*10/fr)/10);
     a(k).cdata = uint8(mean(insertText(tmp,[10 10],txt,'FontSize',18),3));
     a(k).colormap = gray(256);
 end
